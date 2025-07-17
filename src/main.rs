@@ -27,6 +27,11 @@ fn main() {
             let id = id_str.parse::<u32>().expect("Are you serious, ID SHOULD BE A NUMBER for fuck sake");
             complete_task(&mut tasks, id);
         }
+        "delete" => {
+            let id_str = arguments.get(2).expect("Nigga! Provide the ID of the task u want to complete, Fucking retard");
+            let id = id_str.parse::<u32>().expect("Are you serious, ID SHOULD BE A NUMBER for fuck sake");
+            delete_task(&mut tasks, id);
+        }
         _=> {
             writeln!(io::stderr(), "MF, give the correct arguments what is {} are u dumb??",command).unwrap();
         }
@@ -45,6 +50,15 @@ fn add_task(tasks: &mut Vec<Task>, description: String) {
     println!("Added task with ID: {}", new_id)
 }
 
+fn delete_task(tasks: &mut Vec<Task>, id: u32) {
+    if let Some(position) = tasks.iter().position(|t| t.id == id) {
+        let deleted_task = tasks.remove(position);
+        println!("Deleted task {}:{}", id, deleted_task.description);
+    }else {
+        println!("Stupid ass!, give me the correct ID, What the is this {} ??", id);
+    }
+
+}
 
 
 fn list_task(tasks: &[Task]){
