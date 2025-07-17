@@ -8,14 +8,18 @@ struct Task {
     completed: bool
 }
 fn main() {
-    // let arguments : Vec<String> = env::args().collect();
-
-    // let command = arguments.get(1).expect("Provide a command Nigga: add, list, or complete.");
-
+    println!("");
+    println!("");
+    println!("Welcome to the ToDoz App!");
+    print_help();
     let mut tasks = load_tasks().unwrap_or_else(|_| Vec::new());
 
+    ctrlc::set_handler(move || {
+        println!("\nCtrl+C detected. Type 'exit' or 'quit' to close the application.");
+    }).expect("NIGGA EVEN THE CTRL+C HANDLER AIN'T WORKING!!");
+
     loop {
-        print!(">");
+        print!("\n>");
         io::stdout().flush().unwrap();
 
         let mut input = String::new();
@@ -70,6 +74,9 @@ fn main() {
                     println!("Nigga! Provide the ID of the task u want to complete, Fucking retard");
                 }
             }
+            "help" => {
+                print_help();
+            }
             "exit" | "quit" => {
                 println!("Exiting.");
                 break;
@@ -81,6 +88,16 @@ fn main() {
     }
 
     
+}
+
+fn print_help() {
+    println!("\nAvailable commands:");
+    println!("  add <description>  - Add a new task");
+    println!("  list               - Show all tasks");
+    println!("  complete <id>      - Mark a task as complete");
+    println!("  delete <id>        - Delete a task");
+    println!("  help               - Show this help message");
+    println!("  exit / quit        - Close the application");
 }
 
 fn add_task(tasks: &mut Vec<Task>, description: String) {
