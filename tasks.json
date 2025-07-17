@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "description": "Buy milk",
+    "completed": true
+  },
+  {
+    "id": 2,
+    "description": "Learn Rust",
+    "completed": true
+  },
+  {
+    "id": 3,
+    "description": "Buy milk",
+    "completed": false
+  }
+]
