@@ -3,10 +3,5 @@
     "id": 3,
     "description": "Buy milk",
     "completed": true
-  },
-  {
-    "id": 4,
-    "description": "i am a retard",
-    "completed": false
   }
 ]

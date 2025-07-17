@@ -112,11 +112,28 @@ fn add_task(tasks: &mut Vec<Task>, description: String) {
 }
 
 fn delete_task(tasks: &mut Vec<Task>, id: u32) {
-    if let Some(position) = tasks.iter().position(|t| t.id == id) {
+    let task_to_delete = tasks.iter().position(|t| t.id == id);
+
+    if let Some(position) = task_to_delete {
+        if !tasks[position].completed {
+            print!("MF, This task is still incomplete. Do your bitch ass really want to delete it?? (y/n) ");
+            io::stdout().flush().unwrap();
+
+            let mut confirmation = String::new();
+            io::stdin().read_line(&mut confirmation).expect("IT AGAIN FAILED TO READ Confirmation.");
+
+            if confirmation.trim().eq_ignore_ascii_case("y") {
+
+            } else {
+                println!("Deletion canceled.");
+                return;
+            }
+        }
         let deleted_task = tasks.remove(position);
-        println!("Deleted task {}:{}", id, deleted_task.description);
-    }else {
-        println!("Stupid ass!, give me the correct ID, What the is this {} ??", id);
+        println!("Deleted task {}: {}", id, deleted_task.description);
+        save_tasks(tasks).expect("Failed to save tasks.");
+    }  else {
+        println!("Error: Task with ID {} not found.", id);
     }
 
 }
