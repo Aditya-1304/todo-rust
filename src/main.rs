@@ -1,4 +1,4 @@
-use std::{env, fs, io::{self, Write}};
+use std::{ fs, io::{self, Write}};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -8,35 +8,79 @@ struct Task {
     completed: bool
 }
 fn main() {
-    let arguments : Vec<String> = env::args().collect();
+    // let arguments : Vec<String> = env::args().collect();
 
-    let command = arguments.get(1).expect("Provide a command Nigga: add, list, or complete.");
+    // let command = arguments.get(1).expect("Provide a command Nigga: add, list, or complete.");
 
     let mut tasks = load_tasks().unwrap_or_else(|_| Vec::new());
 
-    match command.as_str() {
-        "add" => {
-            let description = arguments.get(2).expect("Add a Fucking description dumbass who makes a todo with out description. What are u a retard??").to_string();
-            add_task(&mut tasks, description);
-        }
-        "list" => {
-            list_task(&tasks);
-        }
-        "complete" => {
-            let id_str = arguments.get(2).expect("Nigga! Provide the ID of the task u want to complete, Fucking retard");
-            let id = id_str.parse::<u32>().expect("Are you serious, ID SHOULD BE A NUMBER for fuck sake");
-            complete_task(&mut tasks, id);
-        }
-        "delete" => {
-            let id_str = arguments.get(2).expect("Nigga! Provide the ID of the task u want to complete, Fucking retard");
-            let id = id_str.parse::<u32>().expect("Are you serious, ID SHOULD BE A NUMBER for fuck sake");
-            delete_task(&mut tasks, id);
-        }
-        _=> {
-            writeln!(io::stderr(), "MF, give the correct arguments what is {} are u dumb??",command).unwrap();
+    loop {
+        print!(">");
+        io::stdout().flush().unwrap();
+
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Can't even read a fcking line");
+
+        let parts: Vec<&str> = input.trim().split_whitespace().collect();
+
+        let command = match parts.get(0) {
+            Some(cmd) => *cmd,
+            None => continue,
+        };
+
+        let arguments = &parts[1..];
+
+        match command {
+            "add" => {
+                if arguments.is_empty() {
+                    println!("Add a Fucking description dumbass who makes a todo with out description. What are u a retard??");
+                    continue;
+                }
+                let description = arguments.join(" ");
+                add_task(&mut tasks, description);
+                save_tasks(&tasks).expect("This program sucks, It failed to save the task");
+            }
+            "list" => {
+                list_task(&tasks);
+            }
+            "complete" => {
+                if let Some(id_str) = arguments.get(0) {
+                    match id_str.parse::<u32>() {
+                        Ok(id) => {
+                            complete_task(&mut tasks, id);
+                            save_tasks(&tasks).expect("This program sucks, It failed to save the task");
+                        }
+                        Err(_) => println!("Are you serious, ID SHOULD BE A NUMBER for fuck sake!!"),
+                    }
+                } else {
+                    println!("Nigga! Provide the ID of the task u want to complete, Fucking retard")
+                }
+                
+            }
+            "delete" => {
+                if let Some(id_str) = arguments.get(0) {
+                    match id_str.parse::<u32>() {
+                        Ok(id) => {
+                            delete_task(&mut tasks, id);
+                            save_tasks(&tasks).expect("This program sucks, It failed to save the task");
+                        }
+                        Err(_) => println!("Are you serious, ID SHOULD BE A NUMBER for fuck sake")
+                    }
+                } else {
+                    println!("Nigga! Provide the ID of the task u want to complete, Fucking retard");
+                }
+            }
+            "exit" | "quit" => {
+                println!("Exiting.");
+                break;
+            }        
+            _=> {
+                writeln!(io::stderr(), "MF, give the correct arguments what is {} are u dumb??",command).unwrap();
+            }
         }
     }
-    save_tasks(&tasks).expect("FAILED TO SAVE STUPID, ASS PROGRAM")
+
+    
 }
 
 fn add_task(tasks: &mut Vec<Task>, description: String) {
