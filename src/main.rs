@@ -132,9 +132,7 @@ fn delete_task(tasks: &mut Vec<Task>, id: u32) {
         let deleted_task = tasks.remove(position);
         println!("Deleted task {}: {}", id, deleted_task.description);
         save_tasks(tasks).expect("Failed to save tasks.");
-    }  else {
-        println!("Error: Task with ID {} not found.", id);
-    }
+    } 
 
 }
 

@@ -1,7 +1,15 @@
 [package]
-name = "Todo"
+name = "todoz-cli"
 version = "0.1.0"
 edition = "2024"
+authors = ["Aditya Mandal mandaladitya1614@gmail.com"]
+description = "A command-line todo application with attitude"
+license = "MIT" 
+repository = "https://github.com/Aditya-1304/todo-rust"  
+homepage = "https://github.com/yourusername/todo-rust"    
+readme = "README.md"                                      
+keywords = ["cli", "todo", "productivity", "terminal"]   
+categories = ["command-line-utilities"]
 
 [dependencies]
 ctrlc = "3.4.7"
