@@ -11,7 +11,7 @@ cargo install todoz-cli
 ## Usage
 
 ```bash
-todoz-app
+todoz-cli
 ```
 
 ### Commands
