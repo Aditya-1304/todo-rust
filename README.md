@@ -1,11 +1,11 @@
-# ToDoz App
+# Todoz-cli App
 
 A command-line todo application with a unique personality.
 
 ## Installation
 
 ```bash
-cargo install todoz-app
+cargo install todoz-cli
 ```
 
 ## Usage
