@@ -10,7 +10,7 @@ struct Task {
 fn main() {
     println!("");
     println!("");
-    println!("Welcome to the ToDoz App!");
+    println!("Welcome to the Todoz-cli App!");
     print_help();
     let mut tasks = load_tasks().unwrap_or_else(|_| Vec::new());
 
